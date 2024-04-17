@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <object th:include="~{fragments/common :: js}" th:remove="tag"></object>
+    <object th:include="~{fragments/common :: css}" th:remove="tag"></object>
+    <title>Form Update Pelatihan</title>
+</head>
+
+<body>
+    <nav th:replace="~{fragments/navbar :: navbar('pelatihan')}"></nav>
+    <br><br><br>
+    <div class="container">
+        <div class="card m-4 p-4">
+            <div class="card-body">
+                <div class="justify-content-center">
+                    <h2 class="text-center">Update Pelatihan</h2>
+                    <br>
+                    <form th:action="@{/pelatihan/update(id=${pelatihan.idPelatihan})}" method="POST">
+
+                        <input class="form-control" type="hidden" name="id" th:value="${pelatihan.idPelatihan}">
+
+                        Nama Pelatihan: <br>
+                        <input class="form-control" type="text" name="namaPelatihan"
+                            th:value="${pelatihan.namaPelatihan}" required/>
+                        <br><br>
+
+
+                        Deskripsi Pelatihan: <br>
+                        <input class="form-control" type="text" name="deskripsi" th:value="${pelatihan.deskripsi}" required/>
+                        <br><br>
+
+                        Tempat Pelatihan: <br>
+                        <input class="form-control" type="text" name="tempat" th:value="${pelatihan.tempat}" required/>
+                        <br><br>
+
+                        Narahubung: <br>
+                        <input class="form-control" type="text" name="narahubung" th:value="${pelatihan.narahubung}" required/>
+                        <br><br>
+
+                        Jenis Pelatihan: <br>
+                        <select class="form-control" name="tipe" required>
+                            <option value="1" th:selected="${pelatihan.tipe eq '1'}">Gernastastaka</option>
+                            <option value="2" th:selected="${pelatihan.tipe eq '2'}">Gernastastaba</option>
+                        </select>
+                        <br><br>
+
+
+                        Tanggal Pelatihan: <br>
+                        <input class="form-control" type="date" name="tanggal"
+                            th:value="${#dates.format(pelatihan.tanggal, 'yyyy-MM-dd')}" required/>
+                        <br><br>
+
+
+<!--                        URL Image: <br>-->
+<!--                        <input class="form-control" type="text" name="image" th:value="${pelatihan.image}" />-->
+<!--                        <br><br>-->
+
+                        <button class="btn btn-primary" type="submit" onclick="return confirmRegistration()">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function confirmRegistration() {
+            return confirm("Apakah Anda yakin ingin mengubah data pelatihan?");
+        }
+    </script>
+
+</body>
+
+</html>

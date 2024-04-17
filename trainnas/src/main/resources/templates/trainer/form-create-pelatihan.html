@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8" />
+  <object th:include="~{fragments/common :: js}" th:remove="tag"></object>
+  <object th:include="~{fragments/common :: css}" th:remove="tag"></object>
+  <title>Form Add Pelatihan</title>
+</head>
+
+<body>
+  <nav th:replace="~{fragments/navbar :: navbar('pelatihan')}"></nav>
+  <br><br><br>
+  <div class="container">
+    <div class="card m-4 p-4">
+      <div class="card-body">
+        <div class="justify-content-center">
+          <h2 class="text-center">Tambah Pelatihan</h2>
+          <br>
+          <!-- <form th:action="@{/barang/tambah}" th:object="${barangDTO}" method="POST"></form> -->
+          <form th:action="@{/pelatihan/add}" th:object="${pelatihanDTO}" method="POST">
+            Nama Pelatihan: <br>
+            <input class="form-control" type="text" th:field="*{namaPelatihan}" required/>
+            </br>
+
+            Deskripsi Pelatihan: <br>
+            <input class="form-control" type="text" th:field="*{deskripsi}" required/>
+            </br>
+
+            Tempat Pelatihan: <br>
+            <input class="form-control" type="text" th:field="*{tempat}" required/>
+            </br>
+
+            Narahubung: <br>
+            <input class="form-control" type="text" th:field="*{narahubung}" required/>
+            </br>
+
+            Jenis Pelatihan: <br>
+            <table class="table">
+              <tbody>
+                <tr>
+                  <select class="form-control" name="tipePelatihan" id="tipePelatihan" th:field="*{tipe}" required>
+                    <option value="Gernastastaka" th:text="'Gernastastaka'"></option>
+                    <option value="Gernastastaba" th:text="'Gernastastaba'"></option>
+                  </select>
+                  <span class="fa-stack">
+                    <i class="fas fa-caret-down fa-stack-1x"></i>
+                  </span>
+                </tr>
+              </tbody>
+            </table>
+
+            Tanggal Pelatihan: <br>
+            <input class="form-control" type="date" th:field="*{tanggal}" required/>
+            <br><br>
+
+<!--            url image: <br>-->
+<!--            <input class="form-control" type="text" th:field="*{image}" />-->
+<!--            <br><br>-->
+
+            <button class="btn btn-primary" type="submit" onclick="return confirmRegistration()">Submit</button>
+            <!-- <a class="btn btn-primary" href="/">Home</a> -->
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+    <script>
+        function confirmRegistration() {
+          return confirm("Apakah Anda yakin ingin menambahkan pelatihan dengan informasi yang telah diisi?");
+        }
+    </script>
+
+</body>
+
+</html>
+

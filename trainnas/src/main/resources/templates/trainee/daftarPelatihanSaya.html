@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8" />
+		<object th:include="~{fragments/common :: js}" th:remove="tag"></object>
+		<object th:include="~{fragments/common :: css}" th:remove="tag"></object>
+		<link
+			href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
+			rel="stylesheet"
+			integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9"
+			crossorigin="anonymous" />
+		<title>View All Pelatihan</title>
+
+		<style>
+			.card-available {
+				background-color: #ffffff;
+				/* Warna putih */
+			}
+
+			.card-done {
+				background-color: #6c767e;
+			}
+
+			/* Tambahkan margin di sekitar judul dan tombol */
+			.card-body .card-title {
+				margin-bottom: 10px;
+			}
+
+			.card-body .btn {
+				margin-top: 10px;
+			}
+
+			/* Atur warna tombol detail */
+			.btn-detail {
+				background-color: #e9ecef !important;
+				color: #000 !important;
+			}
+		</style>
+	</head>
+
+	<body>
+		<nav th:replace="~{fragments/navbar :: navbar('pelatihan')}"></nav>
+		<br><br><br>
+		<div class="container mt-5">
+			<div class="text-center pt-5">
+				<h2>Daftar Pelatihan Saya</h2>
+			</div>
+			<form action="/pelatihan/searchDaftarSaya" method="get" class="mb-3">
+				<div class="input-group">
+					<input type="text" class="form-control" placeholder="Cari pelatihan berdasarkan judul" name="searchQuery" />
+					<div class="input-group-append">
+						<button class="btn btn-primary" type="submit">Cari</button>
+					</div>
+				</div>
+			</form>
+			<!-- Filter untuk tipe pelatihan -->
+			<form action="/pelatihan/filterDaftarPelatihanSaya" method="get" id="filterForm" class="mb-3">
+				<div class="filter-condition">
+					<span>Urutkan Pelatihan</span>
+					<select name="sortType" id="sortType">
+						<option value="All">Tampilkan Semua</option>
+						<option value="Gernastastaka">Gernastastaka</option>
+						<option value="Gernastastaba">Gernastastaba</option>
+					</select>
+				</div>
+			</form>
+			<div class="row row-cols-4">
+				<!-- Iterasi dari indeks terakhir ke awal -->
+				<div
+					th:if="${!listPendaftaran.isEmpty()}"
+					th:each="index : ${#numbers.sequence(0, listPendaftaran.size() - 1)}"
+					class="col">
+					<!-- Mendapatkan indeks dari listPendaftaran, dimulai dari ukuran list - 1 hingga 0 -->
+					<div
+						class="card mb-3"
+						style="max-width: 18rem"
+						th:class="${listPendaftaran[listPendaftaran.size() - 1 - index].pelatihan?.statusApproval == 5 ? 'card card-done' : 'card card-available'}">
+						<!-- Mengakses item listPendaftaran menggunakan indeks yang dihitung mundur -->
+						<div class="card-body">
+							<h5
+								th:text="${listPendaftaran[listPendaftaran.size() - 1 - index].pelatihan?.namaPelatihan}"
+								class="card-title"></h5>
+							<h5
+								th:text="${listPendaftaran[listPendaftaran.size() - 1 - index].pelatihan?.statusApproval}"
+								class="card-title"></h5>
+							<br />
+							<a
+								th:href="@{/pelatihan/detail(id=${listPendaftaran[listPendaftaran.size() - 1 - index].pelatihan?.idPelatihan})}"
+								class="btn btn-md btn-detail"
+								>Detail</a
+							>
+							<!-- Tambahkan kembali form di sini -->
+							<form
+								th:action="@{/pelatihan/cancel/{id}(id=${listPendaftaran[listPendaftaran.size() - 1 - index].idPendaftaran})}"
+								method="post"
+								th:id="'cancelForm-' + ${listPendaftaran[listPendaftaran.size() - 1 - index].idPendaftaran}">
+								<button
+									type="button"
+									class="btn btn-md btn-secondary"
+									th:unless="${listPendaftaran[listPendaftaran.size() - 1 - index].pelatihan?.statusApproval == 5}"
+									th:onclick="'confirmCancellation(' + ${listPendaftaran[listPendaftaran.size() - 1 - index].idPendaftaran} + ')'">
+									Batalkan
+								</button>
+							</form>
+						</div>
+					</div>
+				</div>
+				<div th:if="${listPendaftaran.isEmpty()}" class="col">
+					<p>Anda belum pernah mendaftar pelatihan apapun.</p>
+				</div>
+			</div>
+		</div>
+
+		<script>
+			function confirmCancellation(pendaftaranId) {
+				if (confirm("Apakah Anda yakin ingin membatalkan pendaftaran?")) {
+					document.getElementById("cancelForm-" + pendaftaranId).submit();
+				}
+			}
+			document.getElementById("sortType").addEventListener("change", function () {
+				document.getElementById("filterForm").submit();
+			});
+		</script>
+	</body>
+</html>

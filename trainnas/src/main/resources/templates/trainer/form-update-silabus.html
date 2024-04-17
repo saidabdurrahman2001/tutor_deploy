@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <object th:include="~{fragments/common :: js}" th:remove="tag"></object>
+    <object th:include="~{fragments/common :: css}" th:remove="tag"></object>
+    <title>Form Update Silabus</title>
+</head>
+
+<body>
+    <nav th:replace="~{fragments/navbar :: navbar('silabus')}"></nav>
+    <br><br><br>
+    <div class="container">
+        <div class="card m-4 p-4">
+            <div class="card-body">
+                <div class="justify-content-center">
+                    <h2 class="text-center">Update Bahan Ajar</h2>
+                    <br>
+                    <form th:action="@{/silabus/update(id=${silabus.idSilabus})}" method="POST"
+                        enctype="multipart/form-data">
+
+                        <input class="form-control" type="hidden" name="id" th:value="${silabus.idSilabus}">
+
+
+                        Nama Bahan Ajar: <br>
+                        <input class="form-control" type="text" name="deskripsi" th:value="${silabus.deskripsi}"
+                            required />
+                        <br><br>
+
+                        Tingkatan: <br>
+                        <select class="form-control" name="tingkatan" id="tingkatan" required>
+                            <option value="SD" th:text="'SD'" th:selected="${silabus.tingkatan == 'SD'}"></option>
+                            <option value="SMP" th:text="'SMP'" th:selected="${silabus.tingkatan == 'SMP'}"></option>
+                            <option value="SMA/SMK" th:text="'SMA/SMK'" th:selected="${silabus.tingkatan == 'SMA/SMK'}">
+                            </option>
+                        </select>
+                        <br>
+
+                        File: <br>
+                        <input type="checkbox" id="changePdf" name="changePdf" value="true"
+                            onclick="toggleFileUpload()">
+                        <label for="changePdf">Ingin Mengubah File?</label><br>
+                        <div id="fileUpload" style="display: none;">
+                            <br>
+                            <input type="file" name="file" /><br>
+                        </div>
+                        <br>
+                        <button class="btn btn-primary" type="submit"
+                            onclick="return confirmRegistration()">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function confirmRegistration() {
+            return confirm("Apakah Anda yakin ingin mengubah data Silabus?");
+        }
+        function toggleFileUpload() {
+            var checkBox = document.getElementById("changePdf");
+            var fileUpload = document.getElementById("fileUpload");
+            if (checkBox.checked == true) {
+                fileUpload.style.display = "block";
+            } else {
+                fileUpload.style.display = "none";
+            }
+        }
+    </script>
+
+</body>
+
+</html>

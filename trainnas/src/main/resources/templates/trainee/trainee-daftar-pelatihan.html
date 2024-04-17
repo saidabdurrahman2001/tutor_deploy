@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <object th:include="~{fragments/common :: js}" th:remove="tag"></object>
+    <object th:include="~{fragments/common :: css}" th:remove="tag"></object>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <title>Daftar Pelatihan</title>
+</head>
+
+<body>
+    <!-- Navbar section -->
+    <nav th:replace="~{fragments/navbar :: navbar('pelatihan')}"></nav>
+    <br><br><br>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <h2>Formulir Pendaftaran Pelatihan</h2>
+                <form th:action="@{/pelatihan/daftar(id=${pelatihan.idPelatihan})}" method="post"
+                    th:object="${daftarDTO}" id="registrationForm">
+
+                    <div class="form-group">
+                        <label>Nama Lengkap:</label>
+                        <input type="text" class="form-control" th:field="*{namaLengkap}" required />
+                    </div>
+                    <div class="form-group">
+                        <label>Asal Sekolah:</label>
+                        <input type="text" class="form-control" th:field="*{asalSekolah}" required />
+                    </div>
+                    <div class="form-group">
+                        <label>Email:</label>
+                        <input type="email" class="form-control" th:field="*{email}" required />
+                    </div>
+                    <div class="form-group">
+                        <label>No Telepon:</label>
+                        <input type="tel" class="form-control" th:field="*{noTelepon}" required />
+                    </div>
+                    <button type="submit" class="btn btn-primary" onclick="return confirmRegistration()">Daftar</button>
+                    <button type="button" class="btn btn-secondary" onclick="cancelRegistration()">Cancel</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function confirmRegistration() {
+            return confirm("Apakah Anda yakin ingin mendaftar dengan informasi yang telah diisi?");
+        }
+
+        function cancelRegistration() {
+            if (confirm("Apakah Anda yakin ingin membatalkan pendaftaran?")) {
+                window.location.href = "/pelatihan/viewall"; // Ganti URL dengan halaman view all pendaftaran
+            }
+        }
+    </script>
+</body>
+
+</html>

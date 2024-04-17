@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add Testimoni</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <!-- Optional CSS styles -->
+    <style>
+        /* Add custom styles here */
+        body {
+            background-color: #f8f9fa; /* Warna latar belakang */
+        }
+        .container {
+            margin-top: 50px;
+            background-color: #ffffff; /* Warna latar belakang kontainer */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Efek bayangan */
+        }
+        .form-control {
+            border-radius: 5px;
+        }
+        .btn-primary {
+            background-color: #087988; /* Warna tosca */
+            color: #ffffff; /* Warna teks putih */
+            border: none; /* Menghapus border */
+            transition: background-color 0.3s ease; /* Animasi perubahan */
+        }
+        .btn-primary:hover {
+            background-color: #065a6b; /* Warna tombol saat dihover */
+        }
+        .btn-primary i {
+            margin-right: 5px; /* Spasi antara ikon dan teks tombol */
+        }
+        .btn-primary:focus {
+            outline: none; /* Menghapus outline border saat di-focus */
+            box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0); /* Menghapus efek bayangan saat di-focus */
+        }
+    </style>
+</head>
+
+<body>
+    <nav th:replace="~{fragments/navbar :: navbar('testimoni')}"></nav>
+    <br><br><br>
+    <div class="container">
+        <h2 class="mb-4">Buat Testimoni</h2>
+        <form action="/testimoni/add" method="post">
+            <div class="mb-3">
+                <label for="nama" class="form-label">Nama:</label>
+                <input type="text" class="form-control" id="nama" name="nama" required>
+            </div>
+            
+            <div class="mb-3">
+                <label for="komentar" class="form-label">Komentar:</label>
+                <textarea class="form-control" id="komentar" name="komentar" rows="3" required></textarea>
+            </div>
+            
+            <!-- <div class="mb-3">
+                <label for="tanggal" class="form-label">Tanggal:</label>
+                <input type="date" class="form-control" id="tanggal" name="tanggal" required>
+            </div> -->
+            <button type="submit" class="btn btn-primary" style="padding: 0.5rem 1.5rem; outline: none; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);" onclick="return confirmRegistration()">Submit</button> 
+        </form>
+    </div>
+
+    
+
+    <script>
+        function confirmRegistration() {
+            return confirm("Apakah Anda yakin ingin menambahkan testimoni dengan informasi yang telah diisi?");
+        }
+    </script>
+</body>
+
+</html>

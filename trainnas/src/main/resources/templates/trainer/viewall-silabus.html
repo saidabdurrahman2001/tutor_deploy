@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <object th:include="~{fragments/common :: js}" th:remove="tag"></object>
+    <object th:include="~{fragments/common :: css}" th:remove="tag"></object>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <!-- Inline CSS -->
+    <title>Daftar Silabus</title>
+    <style>
+        .card-available {
+            background-color: #ffffff;
+            /* Warna putih */
+        }
+
+        .card-done {
+            background-color: #6C767E;
+            /* Warna abu-abu */
+        }
+
+        .btn-available {
+            background-color: #087988;
+            /* Warna tosca */
+            color: #ffffff;
+            /* Warna teks putih */
+        }
+
+        .btn-done {
+            background-color: #e9ecef;
+            /* Warna abu-abu muda */
+            color: #000;
+            /* Warna teks hitam */
+        }
+
+        /* Float buttons */
+        .floating-buttons {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+        }
+    </style>
+</head>
+
+<body>
+    <nav th:replace="~{fragments/navbar :: navbar('silabus')}"></nav>
+    <br><br><br>
+    <div class="container">
+        <div class="text-center pt-5">
+            <h2>Daftar Bahan Ajar</h2>
+        </div>
+        <form action="/silabus/searchSilabus" method="get" class="mb-3">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Cari bahan ajar berdasarkan nama"
+                    name="searchQuery">
+                <select class="form-select" name="tingkatan">
+                    <option value="">Pilih Tingkatan</option>
+                    <option value="SD">SD</option>
+                    <option value="SMP">SMP</option>
+                    <option value="SMA/SMK">SMA/SMK</option>
+                </select>
+                <div class="input-group-append">
+                    <button class="btn btn-primary" type="submit">Cari</button>
+                </div>
+            </div>
+        </form>
+        <div class="row row-cols-4">
+            <div th:if="${!listSilabus.isEmpty()}" th:each="silabus : ${listSilabus}" class="col">
+                <div class="card mb-3">
+                    <img src="https://drive.google.com/thumbnail?id=1V6ghr8jGlkbxBMPVBOv8HPbJI6UdB4uu">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${silabus.deskripsi}"></h5>
+                        <br>
+                        <h5 class="card-title" th:text="${silabus.tingkatan}"></h5>
+                        <br>
+                        <!-- <a type="button" class="btn btn-md btn-primary" th:href="@{${silabus.filePath}}"
+                            target="_blank">Download</a> -->
+                        <a type="button" class="btn btn-md btn-primary"
+                            th:href="@{/silabus/detail-trainer(id=${silabus.idSilabus})}">Detail</a>
+                    </div>
+                </div>
+            </div>
+            <div th:if="${listSilabus.isEmpty()}" class="col">
+                <p>Tidak ada bahan ajar yang tersedia saat ini.</p>
+            </div>
+        </div>
+        <div class="floating-buttons">
+            <a type="button" class="btn btn-primary m-2" href="/silabus/tambah">Tambah Bahan Ajar</a>
+            <a type="button" class="btn btn-md btn-primary" href="/">Home</a>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <object th:include="~{fragments/common :: js}" th:remove="tag"></object>
+    <object th:include="~{fragments/common :: css}" th:remove="tag"></object>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <title>View All Pelatihan</title>
+
+    <!-- Inline CSS -->
+    <style>
+        .card-available {
+            background-color: #ffffff;
+            /* Warna putih */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-done {
+            background-color: #6C767E;
+            /* Warna abu-abu */
+        }
+
+        .btn-available {
+            background-color: #087988;
+            /* Warna tosca */
+            color: #ffffff;
+            /* Warna teks putih */
+        }
+
+        .btn-done {
+            background-color: #e9ecef;
+            /* Warna abu-abu muda */
+            color: #000;
+            /* Warna teks hitam */
+        }
+    </style>
+</head>
+
+<body>
+    <nav th:replace="~{fragments/navbar :: navbar('pelatihan')}"></nav>
+    <br><br><br>
+    <div class="container">
+        <div class="text-center pt-5">
+            <h2>Pelatihan yang Tersedia</h2>
+        </div>
+        
+        <!-- Form untuk Pencarian Buku -->
+        <form action="/pelatihan/searchTrainee" method="get" class="mb-3">
+            <div class="input-group">
+                <input type="text" class="form-control" style="border-radius: 1.0rem;" placeholder="Cari pelatihan berdasarkan judul"
+                    name="searchQuery">
+                <div class="input-group-append" style="margin-left: 20px;">
+                    <button class="btn btn-md btn-available" type="submit" style="padding: 0.5rem 1.5rem; outline: none; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">Cari</button>
+                </div>
+                
+            </div>
+        </form>
+
+        <!-- Filter untuk tipe pelatihan -->
+        <form action="/pelatihan/filterPelatihanTrainee" method="get" id="filterForm" class="mb-3">
+            <div class="filter-condition" style="border-radius: 3.0rem; background-color: #f8f9fa; padding: 10px; display: inline-block;">
+                <span style="font-weight: bold; color: #333;"><i class="fas fa-list-alt" style="margin-right: 5px;"></i>Kategori Pelatihan</span>
+                <select name="sortType" id="sortType" style="margin-left: 10px; border: 1px solid #ced4da; border-radius: 5px; padding: 5px;">
+                    <option value="All">Semua</option>
+                    <option value="Gernastastaka">Gernastastaka</option>
+                    <option value="Gernastastaba">Gernastastaba</option>
+                </select>
+            </div>
+        </form>
+        
+
+        <div class="row row-cols-4">
+            <div th:if="${!listPelatihan.isEmpty()}" th:each="index : ${#numbers.sequence(0, listPelatihan.size() - 1)}" class="col">
+                <!-- Mendapatkan indeks dari listPelatihan, dimulai dari ukuran list - 1 hingga 0 -->
+                <div class="card mb-3"
+                    th:class="${listPelatihan[listPelatihan.size() - 1 - index].statusApproval == 5} ? 'card card-done' : 'card card-available'"
+                    style="border-radius: 1.0rem;">
+                    <!-- Mengakses item listPelatihan menggunakan indeks yang dihitung mundur -->
+                    <div class="card-body">
+                        <small>Nama Pelatihan: </small>
+                        <h5 th:text="${listPelatihan[listPelatihan.size() - 1 - index].namaPelatihan}"
+                            class="card-title"></h5>
+                        <br>
+                        <small>Status: </small>
+                        <h5 th:text="${listPelatihan[listPelatihan.size() - 1 - index].statusApproval}"
+                            class="card-title"></h5>
+                        <br>
+                        <small>Deskripsi: </small>
+                        <h6 th:text="${listPelatihan[listPelatihan.size() - 1 - index].deskripsi}"
+                            class="card-title"></h6>
+                        <br>
+                        <a type="button" class="btn btn-md"
+                            th:class="${listPelatihan[listPelatihan.size() - 1 - index].statusApproval == 5} ? 'btn btn-md btn-done' : 'btn btn-md btn-available'"
+                            th:href="@{/pelatihan/detail(id=${listPelatihan[listPelatihan.size() - 1 - index].idPelatihan})}">Detail</a>
+                    </div>
+                </div>
+            </div>
+            <div th:if="${listPelatihan.isEmpty()}" class="col">
+                <p>Tidak ada pelatihan yang tersedia saat ini.</p>
+            </div>
+        </div>
+        <script>
+            document.getElementById("sortType").addEventListener("change", function() {
+                document.getElementById("filterForm").submit();
+            });
+        </script>
+</body>
+
+</html>

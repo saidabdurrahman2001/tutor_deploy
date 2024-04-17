@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <object th:include="~{fragments/common :: js}" th:remove="tag"></object>
+    <object th:include="~{fragments/common :: css}" th:remove="tag"></object>
+    <title>Form Tambah Silabus</title>
+</head>
+
+<body>
+    <nav th:replace="~{fragments/navbar :: navbar('silabus')}"></nav>
+    <br><br><br>
+    <div class="container">
+        <div class="card m-4 p-4">
+            <div class="card-body">
+                <div class="justify-content-center">
+                    <h2 class="text-center">Tambah Bahan Ajar</h2>
+                    <br>
+                    <!-- <form th:action="@{/barang/tambah}" th:object="${barangDTO}" method="POST"></form> -->
+                    <form th:action="@{/silabus/tambah}" th:object="${silabusDTO}" method="POST"
+                        enctype="multipart/form-data">
+
+                        Nama Bahan Ajar: <br>
+                        <input class="form-control" type="text" th:field="*{deskripsi}" required />
+                        </br>
+
+
+                        Tingkatan: <br>
+                        <select class="form-control" name="tingkatan" id="tingkatan" th:field="*{tingkatan}" required>
+                            <option value="SD" th:text="'SD'"></option>
+                            <option value="SMP" th:text="'SMP'"></option>
+                            <option value="SMA/SMK" th:text="'SMA/SMK'"></option>
+                        </select>
+                        <br>
+                        File: <br>
+                        <input type="file" name="file" required />
+                        <br>
+
+                        <br>
+                        <button class="btn btn-primary" type="submit"
+                            onclick="return confirmRegistration()">Submit</button>
+                        <!-- <a class="btn btn-primary" href="/">Home</a> -->
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function confirmRegistration() {
+            return confirm("Apakah Anda yakin ingin menambahkan bahan ajar dengan informasi yang telah diisi?");
+        }
+    </script>
+
+</body>
+
+</html>

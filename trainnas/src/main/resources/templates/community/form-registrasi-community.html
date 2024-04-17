@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<title>Registration Page</title>
+		<object th:include="~{fragments/common :: js}" th:remove="tag"></object>
+		<object th:include="~{fragments/common :: css}" th:remove="tag"></object>
+		<style>
+			.bg-image {
+				background-image: url("https://therichpost.com/wp-content/uploads/2021/02/login-split.jpg");
+				background-size: cover;
+				background-position: center;
+				height: 100vh;
+			}
+			.signup_section {
+				height: 100%;
+			}
+			.error {
+				color: #dc3545;
+			}
+			.btn-primary {
+				border-radius: 20px;
+				padding: 10px 30px;
+			}
+			.btn-outline-primary {
+				border-radius: 20px;
+				padding: 10px 30px;
+				border-color: #007bff;
+				color: #007bff;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container-fluid">
+			<div class="row no-gutters">
+				<div class="col-md-7 d-none d-md-flex bg-image"></div>
+
+				<div class="col-md-5 bg-light">
+					<div class="signup_section d-flex align-items-center p-5">
+						<div class="container">
+							<div class="row">
+								<form th:action="@{/users/add-community}" th:object="${userDTO}" method="post">
+									<h1 class="mb-4">Sign Up</h1>
+									<div class="form-group mb-3">
+										<input
+											type="text"
+											class="form-control rounded-pill border-0 shadow-sm px-4"
+											th:field="*{name}"
+											placeholder="Nama"
+											required />
+									</div>
+									<div class="form-group mb-3">
+										<input
+											type="email"
+											class="form-control rounded-pill border-0 shadow-sm px-4"
+											th:field="*{email}"
+											placeholder="Email"
+											required />
+									</div>
+									<div class="form-group mb-3">
+										<input
+											type="text"
+											class="form-control rounded-pill border-0 shadow-sm px-4"
+											th:field="*{school}"
+											placeholder="Sekolah"
+											required />
+									</div>
+									<div class="form-group mb-3">
+										<input
+											type="text"
+											class="form-control rounded-pill border-0 shadow-sm px-4"
+											th:field="*{phoneNumber}"
+											placeholder="Nomor Telepon"
+											required />
+									</div>
+									<div class="form-group mb-3">
+										<input
+											type="password"
+											class="form-control rounded-pill border-0 shadow-sm px-4"
+											th:field="*{password}"
+											placeholder="password"
+											required />
+									</div>
+									<div class="form-group mb-3">
+										<input
+											type="password"
+											class="form-control rounded-pill border-0 shadow-sm px-4"
+											id="re_password"
+											placeholder="Re-enter password"
+											required />
+									</div>
+									<button type="submit" class="btn btn-primary mr-3">SIGN UP</button>
+									<a href="/login" class="btn btn-outline-primary">LOG IN</a>
+									<p class="small mt-3">
+										By signing up, you agree to our <a href="#">terms of use</a>,
+										<a href="#">privacy policy</a>, and <a href="#">cookie policy</a>.
+									</p>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

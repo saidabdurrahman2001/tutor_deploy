@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <object th:include="~{fragments/common :: js}" th:remove="tag"></object>
+    <object th:include="~{fragments/common :: css}" th:remove="tag"></object>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <title>View All Pelatihan</title>
+
+    <style>
+        .btn-custom-size {
+            padding: 0.5rem 1rem; /* Atur padding */
+            font-size: 1rem; /* Atur ukuran font */
+            width: 150px; /* Menetapkan lebar yang sama untuk semua tombol */
+            /* Menyesuaikan tampilan untuk memastikan tombol terlihat rapi */
+            white-space: nowrap; /* Pastikan teks tidak pindah baris */
+            overflow: hidden; /* Sembunyikan teks yang melebihi batas */
+            text-overflow: ellipsis; /* Tambahkan ellipsis jika teks terlalu panjang */
+        }
+    </style>
+
+
+</head>
+
+<body>
+    <nav th:replace="~{fragments/navbar :: navbar('pelatihan')}"></nav>
+    <br><br><br>
+    <div class="container">
+        <div class="text-center pt-5">
+            <h2>Daftar Approval Pelatihan</h2>
+        </div>
+        <table class="table" id="tablePelatihan">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Nama Pelatihan</th>
+                    <th>Deskripsi</th>
+                    <th>Waktu Buat</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="pelatihan, iterationStatus : ${listPelatihan}">
+                    <td th:text="${iterationStatus.count}"></td>
+                    <td th:text="${pelatihan.namaPelatihan}"></td>
+                    <td th:text="${pelatihan.deskripsi}"></td>
+                    <td class="waktu-buat" th:text="${pelatihan.waktuPembuatan}"></td>
+                    <td>
+                        <span th:switch="${pelatihan.statusApproval}">
+                            <span th:case="1">Requested</span>
+                            <span th:case="2">Approved</span>
+                            <span th:case="3">Rejected</span>
+                            <span th:case="4">Delete Requested</span>
+                            <span th:case="5">Done</span>
+                            <span th:case="*" th:text="${pelatihan.statusApproval}"></span>
+                        </span>
+                    </td>
+                    <td>
+                        <a type="button" class="btn btn-md btn-primary btn-custom-size"
+                            th:href="@{/pelatihan/detail(id=${pelatihan.idPelatihan})}">Detail</a>
+                        <div class="btn-group" th:if="${pelatihan.statusApproval == 1}">
+                            <!-- Form untuk Approve -->
+                            <form th:action="@{/pelatihan/approve(id=${pelatihan.idPelatihan})}" method="post">
+                                <input type="hidden" name="idPelatihan" th:value="${pelatihan.idPelatihan}">
+                                <input type="submit" value="Approve" class="btn btn-warning">
+                            </form>
+
+                            <!-- Trigger Modal untuk Reject -->
+                            <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                th:attr="data-bs-target='#rejectModal'+${pelatihan.idPelatihan}">Reject</button>
+                        </div>
+                        <div class="btn-group" th:if="${pelatihan.statusApproval == 2}">
+                            <!-- Form untuk Done -->
+                            <form th:action="@{/pelatihan/done(id=${pelatihan.idPelatihan})}" method="post">
+                                <input type="hidden" name="idPelatihan" th:value="${pelatihan.idPelatihan}">
+                                <input type="submit" value="Mark as Done" class="btn btn-warning btn-custom-size">
+                            </form>
+                        </div>
+                        <div class="btn-group" th:if="${pelatihan.statusApproval == 4}">
+                            <!-- Form untuk Delete -->
+                            <form th:action="@{/pelatihan/delete(id=${pelatihan.idPelatihan})}" method="post">
+                                <input type="hidden" name="idPelatihan" th:value="${pelatihan.idPelatihan}">
+                                <input type="submit" value="Delete" class="btn btn-warning">
+                            </form>
+                            <form th:action="@{/pelatihan/approve(id=${pelatihan.idPelatihan})}" method="post">
+                                <input type="hidden" name="idPelatihan" th:value="${pelatihan.idPelatihan}">
+                                <input type="submit" value="Ignore" class="btn btn-danger">
+                            </form>
+                        </div>
+
+                        <!-- Modal for Reject -->
+                        <div th:attr="id='rejectModal'+${pelatihan.idPelatihan}" class="modal fade" tabindex="-1"
+                            aria-labelledby="rejectModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Reject Pelatihan</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form th:action="@{/pelatihan/reject}" method="post">
+                                            <input type="hidden" name="idPelatihan" th:value="${pelatihan.idPelatihan}">
+                                            <div class="mb-3">
+                                                <label for="rejectReason" class="form-label">Alasan Penolakan</label>
+                                                <textarea class="form-control" name="komentar" id="rejectReason"
+                                                    rows="3"></textarea>
+                                            </div>
+                                            <button type="submit" class="btn btn-primary">Submit</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <script>
+        $(document).ready(function () {
+            $('#tablePelatihan').DataTable({
+                "lengthMenu": [5, 10, 20],
+                "columnDefs": [
+                    { targets: [5], sortable: false },
+                ]
+            });
+        });
+        document.addEventListener("DOMContentLoaded", function() {
+        // Pilih semua elemen yang memiliki class 'waktu-buat'
+            document.querySelectorAll('.waktu-buat').forEach(function(elem) {
+                // Ambil teks isi elemen (waktu ISO 8601)
+                var waktuISO = elem.textContent;
+                // Ubah menjadi objek Date
+                var date = new Date(waktuISO);
+                // Format ulang tanggal: gunakan format yang Anda inginkan
+                var formattedDate = date.toLocaleString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' });
+                // Ganti teks elemen dengan tanggal yang sudah diformat
+                elem.textContent = formattedDate;
+            });
+        });
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
+	<head>
+		<meta charset="UTF-8" />
+		<!-- Tambahkan link CSS untuk styling -->
+		<link rel="stylesheet" href="style.css" />
+	</head>
+
+	<body>
+		<style>
+			/* Ganti font menjadi Poppins bold dan ukuran 20px, serta warna teks menjadi putih */
+			.font-poppins-bold {
+				font-family: "Poppins", sans-serif;
+				font-weight: bold;
+				font-size: 20px;
+			}
+
+			.text-white {
+				color: white;
+			}
+		</style>
+
+		<nav th:fragment="navbar(page)" class="navbar navbar-expand-lg navbar-light fixed-top mb-3" style="background-color: #153476">
+			<div class="container-fluid">
+				<a class="navbar-brand fw-bold mb-0 ms-1 h1 text-white" href="#">TRAINAS</a>
+				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" 
+					aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="collapse navbar-collapse" id="navbarSupportedContent">
+					<ul class="navbar-nav me-auto mb-2 mb-lg-0 mx-auto">
+						<li class="nav-item">
+							<a class="nav-link fw-bold font-poppins-bold text-white mr-1" aria-current="page" href="#">Dashboard</a>
+						</li>
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle fw-bold font-poppins-bold text-white mr-1" href="#"
+								role="button" data-bs-toggle="dropdown" aria-expanded="false">Pelatihan</a>
+							<ul class="dropdown-menu">
+								<li>
+									<a class="dropdown-item" href="/pelatihan/daftarPelatihanSaya">Daftar Pelatihan Saya (Trainee)</a>
+								</li>
+								<li><a class="dropdown-item" href="/pelatihan/viewall">Daftar Pelatihan Gernas (semua)</a></li>
+								<li><a class="dropdown-item" href="/pelatihan/viewall-trainer">Daftar Pelatihan (Trainer)</a></li>
+								<li>
+									<a class="dropdown-item" href="/pelatihan/viewall-trainer-manager">Daftar Approval Pelatihan(Manager)</a>
+								</li>
+							</ul>
+						</li>
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle fw-bold font-poppins-bold text-white mr-1" href="#" role="button"
+							  data-bs-toggle="dropdown" aria-expanded="false">Bahan Ajar</a>
+							<ul class="dropdown-menu">
+							  <li><a class="dropdown-item" href="/silabus/viewall">List Bahan Ajar</a></li>
+							  <li><a class="dropdown-item" href="/silabus/viewall-trainer">List Bahan Ajar(Trainer)</a></li>
+							</ul>
+						</li>
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle fw-bold font-poppins-bold text-white mr-1" href="#" role="button"
+							  data-bs-toggle="dropdown" aria-expanded="false">Testimoni</a>
+							<ul class="dropdown-menu">
+							  <li><a class="dropdown-item" href="/testimoni/listTestimoni-admin">List Testimoni (Admin)</a></li>
+							  <li><a class="dropdown-item" href="/testimoni/listTestimoni">List Testimoni</a></li>
+							</ul>
+						</li>
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle fw-bold font-poppins-bold text-white mr-1" href="#" role="button"
+							  data-bs-toggle="dropdown" aria-expanded="false">Pengaturan</a>
+							<ul class="dropdown-menu">
+							  <li><a class="dropdown-item" href="/users">List Users</a></li>
+							</ul>
+						</li>
+					</ul>
+					<form class="navbar-nav navbar-right me-0"> 
+						<a href="/login" class="btn btn-outline-success me-2 text-white">Sign In</a> 
+						<a href="/users/add-trainee" class="btn btn-outline-secondary text-white">Sign Up</a> 
+				  	</form>
+				</div>
+			</div>
+		</nav>
+	</body>
+</html>
