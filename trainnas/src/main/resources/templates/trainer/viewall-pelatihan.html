@@ -39,10 +39,13 @@
         </form>
         <div class="row row-cols-3">
             <!-- Iterasi dari indeks terakhir ke awal -->
-            <div th:if="${!listPelatihan.isEmpty()}" th:each="index : ${#numbers.sequence(0, listPelatihan.size() - 1)}" class="col">
+            <div th:if="${!listPelatihan.isEmpty()}" th:each="index : ${#numbers.sequence(0, listPelatihan.size() - 1)}"
+                class="col">
                 <!-- Mendapatkan indeks dari listPelatihan, dimulai dari ukuran list - 1 hingga 0 -->
                 <div class="card mb-3">
                     <div class="card-body">
+                        <img src="/images/image-1.jpg" alt="Logo Orang"
+                            style="max-width: 100%; height: auto; margin-right: 10px;">
                         <h5 class="card-title"
                             th:text="${listPelatihan[listPelatihan.size() - 1 - index].namaPelatihan}"></h5>
                         <p class="card-text">
@@ -71,7 +74,7 @@
         </div>
 
         <script>
-            document.getElementById("sortType").addEventListener("change", function() {
+            document.getElementById("sortType").addEventListener("change", function () {
                 document.getElementById("filterForm").submit();
             });
         </script>

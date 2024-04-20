@@ -28,8 +28,6 @@ import asik.propensik.trainnas.service.PendaftaranService;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-
-
 @Controller
 public class PelatihanController {
     @Autowired
@@ -40,17 +38,26 @@ public class PelatihanController {
 
     @Autowired
     PendaftaranService pendaftaranService;
-    
+
     @RequestMapping("/")
-    public String hello() {
-        return "home";
+    public String hello(Model model) {
+        var pelatihan = pelatihanService.getAllApprovedPelatihan();
+        // Jika ukuran list pelatihan lebih dari 3, ambil 3 pelatihan terakhir
+        List<Pelatihan> pelatihanTerakhir = pelatihan.size() > 3
+                ? pelatihan.subList(pelatihan.size() - 3, pelatihan.size())
+                : pelatihan;
+
+        // Sekarang Anda memiliki daftar 3 pelatihan terakhir dalam 'pelatihanTerakhir'
+        model.addAttribute("pelatihanTerakhir", pelatihanTerakhir);
+
+        return "index";
     }
 
     @RequestMapping("/login")
     public String login() {
         return "login";
     }
-    
+
     @GetMapping("/pelatihan/add")
     public String formAddPelatihan(Model model) {
         var pelatihanDTO = new CreatePelatihanRequestDTO();
@@ -346,28 +353,29 @@ public class PelatihanController {
     @GetMapping("/pelatihan/filterPelatihanTrainee")
     public String filterPelatihanTrainee(@RequestParam("sortType") String sortType, Model model) {
         System.out.println("masuk filter");
-        if("All".equals(sortType)){
+        if ("All".equals(sortType)) {
             List<Pelatihan> listPelatihan = pelatihanService.getAllApprovedPelatihan();
             model.addAttribute("listPelatihan", listPelatihan);
         } else if ("Gernastastaka".equals(sortType)) {
             List<Pelatihan> listPelatihan = pelatihanService.getTakaPelatihan();
             model.addAttribute("listPelatihan", listPelatihan);
-        } else if("Gernastastaba".equals(sortType)) {
+        } else if ("Gernastastaba".equals(sortType)) {
             List<Pelatihan> listPelatihan = pelatihanService.getTabaPelatihan();
             model.addAttribute("listPelatihan", listPelatihan);
         }
         return "trainee/trainee-viewall-pelatihan";
     }
+
     @GetMapping("/pelatihan/filterPelatihanTrainer")
     public String filterPelatihanTrainer(@RequestParam("sortType") String sortType, Model model) {
         System.out.println("masuk filter");
-        if("All".equals(sortType)){
+        if ("All".equals(sortType)) {
             List<Pelatihan> listPelatihan = pelatihanService.getAllPelatihan();
             model.addAttribute("listPelatihan", listPelatihan);
         } else if ("Gernastastaka".equals(sortType)) {
             List<Pelatihan> listPelatihan = pelatihanService.getTakaPelatihanTrainer();
             model.addAttribute("listPelatihan", listPelatihan);
-        } else if("Gernastastaba".equals(sortType)) {
+        } else if ("Gernastastaba".equals(sortType)) {
             List<Pelatihan> listPelatihan = pelatihanService.getTabaPelatihanTrainer();
             model.addAttribute("listPelatihan", listPelatihan);
         }
@@ -377,14 +385,14 @@ public class PelatihanController {
     @GetMapping("/pelatihan/filterDaftarPelatihanSaya")
     public String filterDaftarPelatihanSaya(@RequestParam("sortType") String sortType, Model model) {
         System.out.println("masuk filter");
-        if("All".equals(sortType)){
+        if ("All".equals(sortType)) {
             var listPendaftaran = pendaftaranService.getPelatihanByAsalSekolah("A");
             model.addAttribute("listPendaftaran", listPendaftaran);
         } else if ("Gernastastaka".equals(sortType)) {
             var listPendaftaran = pendaftaranService.getTakaPelatihanSaya("A");
             model.addAttribute("listPendaftaran", listPendaftaran);
-        } else if("Gernastastaba".equals(sortType)) {
-            var listPendaftaran = pendaftaranService.getTabaPelatihanSaya(  "A");
+        } else if ("Gernastastaba".equals(sortType)) {
+            var listPendaftaran = pendaftaranService.getTabaPelatihanSaya("A");
             model.addAttribute("listPendaftaran", listPendaftaran);
         }
         return "trainee/daftarPelatihanSaya";

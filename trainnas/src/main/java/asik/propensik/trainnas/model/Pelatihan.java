@@ -44,8 +44,8 @@ public class Pelatihan {
     @Column(name = "tempat", nullable = false)
     private String tempat;
 
-    @NotNull
-    @Column(name = "deskripsi", nullable = false)
+    @Lob
+    @Column(name = "deskripsi", nullable = false, columnDefinition = "TEXT")
     private String deskripsi;
 
     @NotNull
@@ -55,7 +55,6 @@ public class Pelatihan {
     @NotNull
     @Column(name = "tanggal_pelatihan", nullable = false)
     private Date tanggal;
-
 
     @Column(name = "is_deleted", nullable = false)
     private boolean isDeleted = Boolean.FALSE;
