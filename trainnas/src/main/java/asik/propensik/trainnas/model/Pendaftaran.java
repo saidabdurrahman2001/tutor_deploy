@@ -1,5 +1,6 @@
 package asik.propensik.trainnas.model;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import org.hibernate.annotations.SQLDelete;
@@ -38,5 +39,8 @@ public class Pendaftaran {
     private String asalSekolah;
     private String email;
     private String noTelepon;
+
+    @Column(columnDefinition = "timestamp", nullable = false)
+    private LocalDateTime waktuPembuatan = LocalDateTime.now();
 
 }

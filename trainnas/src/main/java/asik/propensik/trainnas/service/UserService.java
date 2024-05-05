@@ -13,8 +13,8 @@ public class UserService {
     private UserDb userRepository;
 
     public void addUser(User user) {
-    userRepository.save(user);
-   }
+        userRepository.save(user);
+    }
 
     public List<User> getAllUsers() {
         return userRepository.findAll();
@@ -25,13 +25,17 @@ public class UserService {
                 .orElseThrow(() -> new IllegalArgumentException("User not found with id " + id));
     }
 
-    public void updateUser(Long id, String role){
+    public User getUserByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
+    public void updateUser(Long id, String role) {
         var user = getUserById(id);
         user.setRole(role);
         userRepository.save(user);
     }
 
-    public void activatedUser(Long id, boolean activation){
+    public void activatedUser(Long id, boolean activation) {
         var user = getUserById(id);
         user.setActive(activation);
         userRepository.save(user);
@@ -59,19 +63,17 @@ public class UserService {
         return userRepository.findByRole("Community");
     }
 
-    public void setPhoneNumber(Long id, String phoneNumber){
+    public void setPhoneNumber(Long id, String phoneNumber) {
         var user = getUserById(id);
         user.setPhoneNumber(phoneNumber);
         userRepository.save(user);
     }
 
-    public void setSchool(Long id, String school){
+    public void setSchool(Long id, String school) {
         var user = getUserById(id);
         user.setSchool(school);
         userRepository.save(user);
     }
-
-    
 
     // tambahkan method lain jika diperlukan
 }

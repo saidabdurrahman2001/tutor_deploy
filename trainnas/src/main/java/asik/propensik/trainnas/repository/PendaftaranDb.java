@@ -21,11 +21,28 @@ public interface PendaftaranDb extends JpaRepository<Pendaftaran, Long> {
 
     List<Pendaftaran> findByAsalSekolah(String asalSekolah);
 
+    List<Pendaftaran> findByEmail(String email);
+
     List<Pendaftaran> findByAsalSekolahAndPelatihanNamaPelatihanContainingIgnoreCase(String asalSekolah,
             String namaPelatihan);
 
     List<Pendaftaran> findByAsalSekolahAndPelatihan_Tipe(String asalSekolah, String tipe);
 
     List<Pendaftaran> findByPelatihan_IdPelatihan(Long id);
+
+    List<Pendaftaran> findByPelatihan_Tipe(String tipe);
+
+    long countByPelatihan_Tipe(String tipe);
+
+    // Method untuk mengambil jumlah pendaftar per pelatihan
+    @Query("SELECT p.pelatihan.namaPelatihan AS pelatihan, COUNT(p) AS jumlah " +
+            "FROM Pendaftaran p " +
+            "GROUP BY p.pelatihan.namaPelatihan")
+    List<Object[]> countPendaftarPerPelatihan();
+
+    @Query("SELECT MONTH(p.waktuPembuatan) AS bulan, COUNT(p) AS jumlah " +
+            "FROM Pendaftaran p " +
+            "GROUP BY MONTH(p.waktuPembuatan)")
+    List<Object[]> countPendaftarPerBulan();
 
 }

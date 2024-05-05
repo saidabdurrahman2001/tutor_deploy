@@ -14,19 +14,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.fasterxml.jackson.annotation.JsonCreator.Mode;
-
 import asik.propensik.trainnas.dto.PelatihanMapper;
 import asik.propensik.trainnas.dto.request.CreatePelatihanRequestDTO;
 import asik.propensik.trainnas.dto.request.DaftarPelatihanDTO;
 import asik.propensik.trainnas.dto.request.UpdatePelatihanRequestDTO;
 import asik.propensik.trainnas.model.Pelatihan;
 import asik.propensik.trainnas.model.Pendaftaran;
+import asik.propensik.trainnas.model.User;
 import asik.propensik.trainnas.service.PelatihanService;
 import asik.propensik.trainnas.service.PendaftaranService;
-
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMethod;
+import asik.propensik.trainnas.service.UserService;
 
 @Controller
 public class PelatihanController {
@@ -38,6 +35,9 @@ public class PelatihanController {
 
     @Autowired
     PendaftaranService pendaftaranService;
+
+    @Autowired
+    UserService userService;
 
     @RequestMapping("/")
     public String hello(Model model) {
@@ -154,27 +154,10 @@ public class PelatihanController {
         return "trainer/viewall-pelatihan";
     }
 
-    // @GetMapping("/pelatihan/daftarPelatihanSaya")
-    // public String daftarPelatihanSaya(Model model) {
-    // // Dapatkan ID pelatihan yang unik dari pendaftaran
-    // List<Long> pelatihanIds = pendaftaranService.findDistinctPelatihanId(); //
-    // mesti implement kalo udh ada user
-
-    // // Gunakan ID tersebut untuk mendapatkan detail pelatihan
-    // List<Pelatihan> pelatihanList =
-    // pelatihanService.findPelatihanByPendaftaranIds(pelatihanIds);
-
-    // // Tambahkan daftar pelatihan ke model untuk ditampilkan di view
-    // model.addAttribute("pelatihanList", pelatihanList);
-
-    // // Nama file HTML (tanpa ekstensi .html) di dalam folder
-    // // src/main/resources/templates
-    // return "daftarPelatihanSaya";
-    // }
-
     @GetMapping("/pelatihan/daftarPelatihanSaya")
     public String daftarPelatihanSaya(Model model) {
-        List<Pendaftaran> listPendaftaran = pendaftaranService.getPelatihanByAsalSekolah("A");
+        String email = "said.abdurrahman@ui.ac.id";
+        List<Pendaftaran> listPendaftaran = pendaftaranService.getPelatihanByEmail(email);
         model.addAttribute("listPendaftaran", listPendaftaran);
         return "trainee/daftarPelatihanSaya";
     }
@@ -318,14 +301,6 @@ public class PelatihanController {
         model.addAttribute("listPendaftaran", listPendaftaran);
         return "trainee/daftarPelatihanSaya";
     }
-
-    // @GetMapping("/pelatihan/daftarPelatihanSaya")
-    // public String daftarPelatihanSaya(Model model) {
-    // List<Pendaftaran> listPendaftaran =
-    // pendaftaranService.getPelatihanByAsalSekolah("A");
-    // model.addAttribute("listPendaftaran", listPendaftaran);
-    // return "trainee/daftarPelatihanSaya";
-    // }
 
     @GetMapping("/pelatihan/takaTrainer")
     public String takaPelatihanTrainer(Model model) {

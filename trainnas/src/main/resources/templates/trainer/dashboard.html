@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <!-- Load Google Charts -->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        google.charts.load('current', { 'packages': ['corechart'] });
+        google.charts.setOnLoadCallback(drawCharts);
+
+        function drawCharts() {
+            drawPerbandinganPelatihan();
+            drawTopPelatihan();
+            drawJumlahPendaftaran();
+        }
+
+        function drawPerbandinganPelatihan() {
+            // Ambil jumlah pendaftaran dari model di server
+
+            // Data perbandingan dari server (misalnya dari Spring Model Attribute)
+            var gernastakaCount = [[${ jumlahGernastastaka }]]
+            var gernastatabaCount = [[${ jumlahGernastastaba }]]
+
+
+            var data = google.visualization.arrayToDataTable([
+                ['Tipe Pelatihan', 'Jumlah'],
+                ['Gernastastaka', gernastakaCount],
+                ['Gernastataba', gernastatabaCount]
+            ]);
+
+            var options = {
+                title: 'Perbandingan Pelatihan Gernastastaka vs Gernastataba'
+            };
+
+            var chart = new google.visualization.PieChart(document.getElementById('perbandinganPelatihanChart'));
+
+            chart.draw(data, options);
+        }
+
+        function drawTopPelatihan() {
+            // Data top pelatihan dari server (misalnya dari Spring Model Attribute)
+            var pelatiahan1 = "[[${pelatihan1}]]";
+            var pelatiahan2 = "[[${pelatihan2}]]";
+            var pelatihan3 = "[[${pelatihan3}]]";
+            var topPelatihanData = [
+                ['Pelatihan', 'Jumlah Pendaftar'],
+                [pelatiahan1, [[${ jumlah1 }]]], // Ganti dengan data sesuai dengan top 3 pelatihan yang paling banyak diikuti
+                [pelatiahan2, [[${ jumlah2 }]]],
+                [pelatihan3, [[${ jumlah2 }]]]
+            ];
+
+            var data = google.visualization.arrayToDataTable(topPelatihanData);
+
+            var options = {
+                title: 'Top 3 Pelatihan Paling Banyak Diikuti',
+                bars: 'horizontal' // Menampilkan grafik batang horizontal
+            };
+
+            var chart = new google.visualization.BarChart(document.getElementById('topPelatihanChart'));
+
+            chart.draw(data, options);
+        }
+
+        function drawJumlahPendaftaran() {
+            // Data jumlah pendaftaran per bulan dari server (misalnya dari Spring Model Attribute)
+            var bulan1 = "[[${bulan1}]]";
+            var dataPendaftaran = [
+                ['Bulan', 'Jumlah Pendaftaran'],
+                ['previous month', 0],
+                ['previous month', 1],
+                [bulan1, [[${ jumlah1 }]]], // Ganti dengan data jumlah pendaftaran per bulan
+
+                // Lanjutkan dengan bulan-bulan lainnya
+            ];
+
+            var data = google.visualization.arrayToDataTable(dataPendaftaran);
+
+            var options = {
+                title: 'Jumlah Orang yang Mendaftar per Bulan',
+                curveType: 'function', // Menampilkan garis yang halus
+                legend: { position: 'bottom' }
+            };
+
+            var chart = new google.visualization.LineChart(document.getElementById('jumlahPendaftaranChart'));
+
+            chart.draw(data, options);
+        }
+    </script>
+    <style>
+        .chart-container {
+            width: 500px;
+            height: 500px;
+            display: inline-block;
+            border: 1px solid #ccc;
+            /* Tambahkan garis tepi */
+            margin: 10px;
+            /* Tambahkan ruang antara kotak */
+            padding: 10px;
+            /* Tambahkan ruang di dalam kotak */
+            box-sizing: border-box;
+            /* Pastikan padding tidak meningkatkan lebar kotak */
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Dashboard</h1>
+    <div id="perbandinganPelatihanChart" class="chart-container"></div>
+    <div id="jumlahPendaftaranChart" class="chart-container"></div>
+    <div id="topPelatihanChart" class="chart-container"></div>
+
+</body>
+
+</html>

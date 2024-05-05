@@ -1,6 +1,9 @@
 package asik.propensik.trainnas.service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +44,10 @@ public class PendaftaranService {
         return pendaftaranDb.findByAsalSekolah(asalSekolah);
     }
 
+    public List<Pendaftaran> getPelatihanByEmail(String email) {
+        return pendaftaranDb.findByEmail(email);
+    }
+
     public List<Pendaftaran> getTakaPelatihanSaya(String asalSekolah) {
         return pendaftaranDb.findByAsalSekolahAndPelatihan_Tipe(asalSekolah, "Gernastastaka");
     }
@@ -58,6 +65,49 @@ public class PendaftaranService {
         List<Pendaftaran> listPendaftaran = pendaftaranDb
                 .findByAsalSekolahAndPelatihanNamaPelatihanContainingIgnoreCase(asalSekolah, namaPelatihan);
         return listPendaftaran;
+    }
+
+    public long countPendaftaranByTipePelatihan(String tipe) {
+        // Menghitung jumlah pendaftaran berdasarkan tipe pelatihan
+        return pendaftaranDb.countByPelatihan_Tipe(tipe);
+    }
+
+    public List<Map<String, Object>> countPendaftarPerPelatihan() {
+        List<Object[]> results = pendaftaranDb.countPendaftarPerPelatihan();
+        List<Map<String, Object>> resultList = new ArrayList<>();
+
+        for (Object[] result : results) {
+            Map<String, Object> data = new HashMap<>();
+            data.put("pelatihan", result[0]);
+            data.put("jumlah", result[1]);
+            resultList.add(data);
+        }
+
+        return resultList;
+    }
+
+    public List<Map<String, Object>> countPendaftarPerBulan() {
+        List<Object[]> results = pendaftaranDb.countPendaftarPerBulan();
+        List<Map<String, Object>> resultList = new ArrayList<>();
+
+        for (Object[] result : results) {
+            Map<String, Object> data = new HashMap<>();
+            int bulan = (int) result[0];
+            String namaBulan = getNamaBulan(bulan); // Mendapatkan nama bulan berdasarkan nomor bulan
+            long jumlah = (long) result[1];
+            data.put("nama bulan", namaBulan);
+            data.put("jumlah", jumlah);
+            resultList.add(data);
+        }
+
+        return resultList;
+    }
+
+    // Method untuk mendapatkan nama bulan berdasarkan nomor bulan
+    private String getNamaBulan(int bulan) {
+        String[] namaBulan = { "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September",
+                "Oktober", "November", "Desember" };
+        return namaBulan[bulan - 1];
     }
 
 }

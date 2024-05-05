@@ -17,15 +17,15 @@ import asik.propensik.trainnas.model.User;
 import asik.propensik.trainnas.service.UserService;
 
 import java.util.List;
-import org.springframework.web.bind.annotation.RequestBody;
 
-
+import org.springframework.web.bind.annotation.RestController;
 
 @Controller
 public class UserController {
+
     @Autowired
     UserMapper userMapper;
-    
+
     @Autowired
     private UserService userService;
 
@@ -71,7 +71,7 @@ public class UserController {
     public String addCommunityFormPage(Model model) {
         var userDTO = new CreateUserRequestDTO();
         model.addAttribute("userDTO", userDTO);
-        return "community/form-registrasi-community";    
+        return "community/form-registrasi-community";
     }
 
     @PostMapping("/users/add-community")
@@ -81,7 +81,7 @@ public class UserController {
         userService.addUser(user);
         return "community/success-create-community";
     }
-    
+
     @GetMapping("/users/profile-update")
     public String formUpdateProfile(Model model, @RequestParam("id") Long idUser) {
         var user = userService.getUserById(idUser);
@@ -90,12 +90,13 @@ public class UserController {
     }
 
     @PostMapping("/users/profile-update")
-    public String formUpdateProfile(Model model,@RequestParam("id") Long id, @RequestParam("school") String school, @RequestParam("phoneNumber") String phoneNumber) {
+    public String formUpdateProfile(Model model, @RequestParam("id") Long id, @RequestParam("school") String school,
+            @RequestParam("phoneNumber") String phoneNumber) {
         userService.setPhoneNumber(id, phoneNumber);
-        userService.setSchool(id, school);        
+        userService.setSchool(id, school);
         return "home";
     }
-    
+
     @GetMapping("/users/{id}")
     public String getUserById(@PathVariable Long id, Model model) {
         User user = userService.getUserById(id);
@@ -104,12 +105,12 @@ public class UserController {
     }
 
     @GetMapping("/users/detail")
-    public String detailUser(@RequestParam("id") Long idUser, Model model){
+    public String detailUser(@RequestParam("id") Long idUser, Model model) {
         var user = userService.getUserById(idUser);
         model.addAttribute("user", user);
         return "user-detail";
     }
-    
+
     @GetMapping("/users/user-update")
     public String formUpdateUser(Model model, @RequestParam("id") Long idUser) {
         var user = userService.getUserById(idUser);
@@ -118,8 +119,9 @@ public class UserController {
     }
 
     @PostMapping("/users/user-update")
-    public String formUpdateUser(@RequestParam("id") Long id, Model model, @RequestParam("role") String role, @RequestParam("isActive") Boolean isActive){
-        userService.updateUser(id,role);
+    public String formUpdateUser(@RequestParam("id") Long id, Model model, @RequestParam("role") String role,
+            @RequestParam("isActive") Boolean isActive) {
+        userService.updateUser(id, role);
         userService.activatedUser(id, isActive);
         return "redirect:/users";
 
@@ -152,8 +154,7 @@ public class UserController {
             List<User> listUser = userService.getUserCommunity();
             model.addAttribute("users", listUser);
             model.addAttribute("tipeRole", "Community");
-    }
+        }
         return "user-list";
     }
 }
-    

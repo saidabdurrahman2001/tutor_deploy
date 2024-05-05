@@ -42,8 +42,8 @@ public class PelatihanService {
         var pelatihan = getPelatihanById(id);
         pelatihan.setStatusApproval(5);
         pelatihanDb.save(pelatihan);
-    }   
-    
+    }
+
     public Pelatihan updatePelatihan(Pelatihan pelatihanFromDto) {
         Pelatihan pelatihan = getPelatihanById(pelatihanFromDto.getIdPelatihan());
 
@@ -113,7 +113,7 @@ public class PelatihanService {
 
     public List<Pelatihan> getTabaPelatihan() {
         // Daftar status yang diinginkan: 2 (approved) dan 5 (done)
-        List<Integer> statusList = Arrays.asList( 2, 5);
+        List<Integer> statusList = Arrays.asList(2, 5);
         return pelatihanDb.findByTipeAndStatusApprovalIn("Gernastastaba", statusList);
     }
 

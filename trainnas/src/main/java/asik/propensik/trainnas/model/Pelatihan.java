@@ -10,7 +10,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -38,7 +40,7 @@ public class Pelatihan {
 
     @NotNull
     @Column(name = "tipe", nullable = false)
-    private String tipe;
+    private String tipe; // Gernastastaka atau Gernastastaba
 
     @NotNull
     @Column(name = "tempat", nullable = false)
@@ -67,4 +69,5 @@ public class Pelatihan {
 
     @Column(columnDefinition = "timestamp", nullable = false)
     private LocalDateTime waktuPembuatan = LocalDateTime.now();
+
 }
